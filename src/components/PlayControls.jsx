@@ -5,6 +5,7 @@ import Jhoome from "../songs/Jhoome.mp3"
 import Jim from "../songs/Jim.mp3"
 import Pathaan from "../songs/Pathaan.mp3"
 import Tumhe from "../songs/Tumhe.mp3"
+import { is_empty } from "../components/Utils"
 
 export const songs = [
     {
@@ -35,25 +36,23 @@ export const songs = [
 ];
 
 const PlayControls = () => {
-    
-    const [selectedSongIndex, setSelectedSongIndex] = useState(0);
 
+    const [selectedSongId, setSelectedSongId] = useState();
     const [playPause, setPlayPause] = useState();
 
-    const handlePlay = (index) => {
-        if (index === selectedSongIndex) {    //user clicked on the currently playing song
-            handlePause(); 
+    const handlePlay = (songId) => {
+        if (songId === selectedSongId) {    //user clicked on the currently playing song
+            handlePause();
         } else {
             setPlayPause(true); //indicates that the song should be playing 
-            setSelectedSongIndex(index); //update selectedSongIndex 
+            setSelectedSongId(songId); //update selectedSongId 
         }
     };
-    
 
     const handlePause = () => {
         const audioElement = document.querySelector('audio'); //accessing the DOM through document.querySelector() 
         setPlayPause(audioElement.paused);
-        console.log("========>>>>", audioElement);
+        // console.log("========>>>>", audioElement);
         if (audioElement.paused) {
             audioElement.play();
         } else {
@@ -61,34 +60,38 @@ const PlayControls = () => {
         }
     };
 
-
     const handlePrevious = () => {
-        setSelectedSongIndex(prevIndex => (prevIndex > 0 ? prevIndex - 1 : songs.length - 1));
+        // setSelectedSongId(prevIndex => (prevIndex > 0 ? prevIndex - 1 : songs.length - 1));
+        const currentIndex = songs.findIndex(item => item.id === selectedSongId);
+        const previousIndex = (currentIndex > 0) ? currentIndex - 1 : songs.length - 1;
+        setSelectedSongId(songs[previousIndex].id);
     };
 
     const handleNext = () => {
-        setSelectedSongIndex(prevIndex => (prevIndex < songs.length - 1 ? prevIndex + 1 : 0));
+        // setSelectedSongId(prevIndex => (prevIndex < songs.length - 1 ? prevIndex + 1 : 0));
+        const currentIndex = songs.findIndex(item => item.id === selectedSongId);
+        const nextIndex = (currentIndex < songs.length - 1) ? currentIndex + 1 : 0;
+        setSelectedSongId(songs[nextIndex].id);
     };
 
-    const selectedSong = songs[selectedSongIndex];
+    const selectedSong = songs.find(item => item.id === selectedSongId);
+    console.log("selectedSong", is_empty(selectedSong));
 
     return (
         <div>
             PlayControls
-            <audio src={selectedSong.file_name} autoPlay />
+            <audio src={selectedSong?.file_name} autoPlay />
             <ul>
-                {songs.map((song, index) => (
-                    <li key={song.id} onClick={() => handlePlay(index)}>
+                {songs.map((song) => (
+                    <li key={song.id} onClick={() => handlePlay(song.id)}>
                         {song.name}
                     </li>
                 ))}
             </ul>
 
-            
-
             {/* displaying name of the song */}
-            {selectedSong.name} 
-            
+            {is_empty(selectedSong) ? "" : selectedSong.name}
+
             <button onClick={handlePause}>
                 {playPause ? "Pause" : "Play"}
             </button>
@@ -96,7 +99,7 @@ const PlayControls = () => {
             <button onClick={handleNext}>Next</button>
 
             <Link to="/playlists">
-            <button>Playlists</button>
+                <button>Playlists</button>
             </Link>
         </div>
     );

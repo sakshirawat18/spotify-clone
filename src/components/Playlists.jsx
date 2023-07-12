@@ -5,6 +5,8 @@ const Playlists = () => {
   const [showDropdown, setShowDropdown] = useState(false);    //keeps track of whether the dropdown with song options should be shown or hidden.
   const [selectedSongs, setSelectedSongs] = useState([]);   //an array that stores the IDs of the selected songs.
   const [playlist, setPlaylist] = useState([])  // Holds the selected songs as a playlist.
+  const [selectedSongIndex, setSelectedSongIndex] = useState(0);
+  const selectedSong = songs[selectedSongIndex];
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -26,9 +28,15 @@ const Playlists = () => {
     setPlaylist(selectedSongsArray);    // Update the playlist state with the selected songs.
   };
 
+  const handlePlay = (index) => {
+  setSelectedSongIndex(index)
+    console.log("index", index);
+};
+
 
   return (
     <div>
+
       <h1>Playlists</h1>
       <button onClick={toggleDropdown}>Create new playlist</button>
       {showDropdown && (
@@ -50,12 +58,17 @@ const Playlists = () => {
 
           <h3>Your Playlist:</h3>
           <ul>
-            {playlist.map((song) => (
-              <li key={song.id}>{song.name}</li>  // Renders each selected song as a list item with a unique key based on the song's id and displays the song's name.
+            {playlist.map((song, index) => (
+              <li key={song.id} onClick={() => handlePlay(index)}>
+                {song.name}
+              </li>  // Renders each selected song as a list item with a unique key based on the song's id and displays the song's name.
             ))}
           </ul>
         </div>
+        
       )}
+          <audio src={selectedSong.file_name} autoPlay />
+
     </div>
   );
 };
