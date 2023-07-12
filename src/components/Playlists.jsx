@@ -39,6 +39,8 @@ const Playlists = () => {
 
       <h1>Playlists</h1>
       <button onClick={toggleDropdown}>Create new playlist</button>
+      <audio src={selectedSong.file_name} autoPlay />
+
       {showDropdown && (
         <div>
           <h3>Select Songs:</h3>
@@ -67,8 +69,7 @@ const Playlists = () => {
         </div>
         
       )}
-          <audio src={selectedSong.file_name} autoPlay />
-
+          
     </div>
   );
 };

@@ -39,25 +39,35 @@ const PlayControls = () => {
 
     const [selectedSongId, setSelectedSongId] = useState();
     const [playPause, setPlayPause] = useState();
+    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
-    const handlePlay = (songId) => {
+
+    const playMusic = (songId) => {
         if (songId === selectedSongId) {    //user clicked on the currently playing song
             handlePause();
         } else {
             setPlayPause(true); //indicates that the song should be playing 
             setSelectedSongId(songId); //update selectedSongId 
+            setIsButtonDisabled(false);
         }
     };
 
     const handlePause = () => {
-        const audioElement = document.querySelector('audio'); //accessing the DOM through document.querySelector() 
-        setPlayPause(audioElement.paused);
-        // console.log("========>>>>", audioElement);
-        if (audioElement.paused) {
-            audioElement.play();
-        } else {
-            audioElement.pause();
+        if (is_empty(selectedSongId)){
+            setIsButtonDisabled(true);
         }
+        else{
+            setIsButtonDisabled(false);
+            const audioElement = document.querySelector('audio'); //accessing the DOM through document.querySelector() 
+            setPlayPause(audioElement.paused);
+            // console.log("========>>>>", audioElement);
+            if (audioElement.paused) {
+                audioElement.play();
+            } else {
+                audioElement.pause();
+            }
+        }
+
     };
 
     const handlePrevious = () => {
@@ -83,7 +93,7 @@ const PlayControls = () => {
             <audio src={selectedSong?.file_name} autoPlay />
             <ul>
                 {songs.map((song) => (
-                    <li key={song.id} onClick={() => handlePlay(song.id)}>
+                    <li key={song.id} onClick={() => playMusic(song.id)}>
                         {song.name}
                     </li>
                 ))}
@@ -92,7 +102,7 @@ const PlayControls = () => {
             {/* displaying name of the song */}
             {is_empty(selectedSong) ? "" : selectedSong.name}
 
-            <button onClick={handlePause}>
+            <button disabled={isButtonDisabled} onClick={handlePause}>
                 {playPause ? "Pause" : "Play"}
             </button>
             <button onClick={handlePrevious}>Previous</button>
