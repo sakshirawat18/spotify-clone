@@ -15,11 +15,11 @@ const Playlists = () => {
   const [createDisable, setCreateDisable] = useState(false);
 
 
-  const selectedSong = songs.find(item => item.id === selectedSongId);
+  const selectedSong = songs.find(item => item.id === selectedSongId);   // Find the selected song based on the selectedSongId.
 
   const toggleDropdown = () => {
-    setShowDropdown(!showDropdown);
-    setStartDisable(!showDropdown);
+    setShowDropdown(!showDropdown);  // Toggle the visibility of the dropdown.
+    setStartDisable(!showDropdown); // Disable the "Create new playlist" button when the dropdown is shown.
   };
 
   // It adds or removes the song ID from the selectedSongs array based on whether it's already present or not.
@@ -36,7 +36,7 @@ const Playlists = () => {
       songs.find((song) => song.id === songId)
     );
     setPlaylist(selectedSongsArray);    // Update the playlist state with the selected songs.
-    setCreateDisable(true);
+    setCreateDisable(true);   // Disable the "Create" button after creating the playlist.
   };
 
   const handlePlay = (songId) => {
@@ -53,41 +53,41 @@ const Playlists = () => {
 
   const handlePause = () => {
     if (is_empty(selectedSongId)) {
-      setPlayDisable(true);
+      setPlayDisable(true);  // Disable the "Play" button if there is no selected song.
     }
     else {
-      setPlayDisable(false);
+      setPlayDisable(false);  // Enable the "Play" button.
       const audioElement = document.querySelector('audio'); //accessing the DOM through document.querySelector() 
       setPlayPause(audioElement.paused);
       // console.log("========>>>>", audioElement);
       if (audioElement.paused) {
-        audioElement.play();
+        audioElement.play();  // Play the audio element if it's paused.
       } else {
-        audioElement.pause();
+        audioElement.pause();  // Pause the audio element if it's playing.
       }
     }
   };
 
   const handlePrevious = () => {
-    if (is_empty(selectedSongId)){
-      setPrevDisable(true);
-  }
-  else{
-    const currentIndex = playlist.findIndex(item => item.id === selectedSongId);
-    const previousIndex = (currentIndex > 0) ? currentIndex - 1 : playlist.length - 1;
-    setSelectedSongId(playlist[previousIndex].id);
-  }
+    if (is_empty(selectedSongId)) {
+      setPrevDisable(true);  // Disable the "Previous" button if there is no selected song.
+    }
+    else {
+      const currentIndex = playlist.findIndex(item => item.id === selectedSongId);
+      const previousIndex = (currentIndex > 0) ? currentIndex - 1 : playlist.length - 1;
+      setSelectedSongId(playlist[previousIndex].id);  // Set the selectedSongId to the previous song in the playlist.
+    }
   };
 
   const handleNext = () => {
-    if (is_empty(selectedSongId)){
-      setNextDisable(true);
-  }
-  else{
-    const currentIndex = playlist.findIndex(item => item.id === selectedSongId);
-    const nextIndex = (currentIndex < playlist.length - 1) ? currentIndex + 1 : 0;
-    setSelectedSongId(playlist[nextIndex].id);
-  }
+    if (is_empty(selectedSongId)) {
+      setNextDisable(true);  // Disable the "Next" button if there is no selected song.
+    }
+    else {
+      const currentIndex = playlist.findIndex(item => item.id === selectedSongId);
+      const nextIndex = (currentIndex < playlist.length - 1) ? currentIndex + 1 : 0;
+      setSelectedSongId(playlist[nextIndex].id);  // Set the selectedSongId to the next song in the playlist.
+    }
   };
 
   return (
@@ -123,7 +123,7 @@ const Playlists = () => {
           </ul>
 
           {/* printing currently playing song */}
-          {is_empty(selectedSong) ? "" : selectedSong.name} 
+          {is_empty(selectedSong) ? "" : selectedSong.name}
 
           <button disabled={playDisable} onClick={handlePause}>
             {playPause ? "Pause" : "Play"}
