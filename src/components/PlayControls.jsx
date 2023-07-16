@@ -1,39 +1,8 @@
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react'
-import Besharam from "../songs/Besharam.mp3"
-import AgarTumMilJao from "../songs/AgarTumMilJao.mp3"
-import DilDooba from "../songs/DilDooba.mp3"
-import VandeMataram from "../songs/VandeMataram.mp3"
-import ZaraZara from "../songs/ZaraZara.mp3"
 import { is_empty } from "../components/Utils"
+import { songs } from "../components/SongData"
 
-export const songs = [
-    {
-        id: 1,
-        name: "Besharam",
-        file_name: Besharam,
-    },
-    {
-        id: 2,
-        name: "AgarTumMilJao",
-        file_name: AgarTumMilJao,
-    },
-    {
-        id: 3,
-        name: "DilDooba",
-        file_name: DilDooba,
-    },
-    {
-        id: 4,
-        name: "VandeMataram",
-        file_name: VandeMataram,
-    },
-    {
-        id: 5,
-        name: "ZaraZara",
-        file_name: ZaraZara,
-    }
-];
 
 const PlayControls = () => {
 
@@ -107,13 +76,14 @@ const PlayControls = () => {
             <ul>
                 {songs.map((song) => (
                     <li key={song.id} onClick={() => playMusic(song.id)}>
-                        {song.name}
+                        {song.name} <img src={song.image} width="100" height="100" />
                     </li>
                 ))}
             </ul>
 
-            {/* displaying name of the song */}
+            {/* displaying name of the current playing song */}
             {is_empty(selectedSong) ? "" : selectedSong.name}
+            {is_empty(selectedSong) ? "" : <img src={selectedSong?.image} width="230" height="250" />}
 
             <button disabled={playDisable} onClick={handlePause}>
                 {playPause ? "Pause" : "Play"}
