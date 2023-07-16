@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PlayControls from './components/PlayControls';
 import Playlists from './components/Playlists';
 
-
 function App() {
   return (
     <BrowserRouter>

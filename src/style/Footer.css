@@ -1,0 +1,93 @@
+.bottomNavigation {
+    background: black !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center;
+    height: 72px !important;
+}
+
+.left {
+    height: 82%;
+    display: flex;
+    width: 20%;
+    gap: 16px;
+    margin-left: 16px;
+    align-items: center;
+}
+
+.currentPlayingSong {
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+.left>img {
+    border-radius: 4px;
+    height: 80%;
+}
+
+.musicName {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #fff;
+
+}
+
+.artistName {
+    font-size: 0.6875rem;
+    font-weight: 400;
+    color: #6a6a6a;
+    
+}
+
+.heartIcon {
+    align-items: center;
+    display: flex !important;
+    justify-content: center;
+}
+
+.center {
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.controls {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.slider {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+}
+
+.timer {
+    color: #6a6a6a;
+    font-size: 0.6875rem;
+    font-weight: 400;
+}
+
+.totalTime {
+    color: #6a6a6a;
+    font-size: 0.6875rem;
+    font-weight: 400;
+
+}
+
+.right {
+    gap: 16px;
+    width: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 16px;
+
+}

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import React, { useState } from 'react'
 import { is_empty } from "../components/Utils"
 import { songs } from "../components/SongData"
+import Footer from './Footer';
 
 
 const PlayControls = () => {
@@ -94,6 +95,7 @@ const PlayControls = () => {
             <Link to="/playlists">
                 <button>Playlists</button>
             </Link>
+            <Footer/>
         </div>
     );
 }
