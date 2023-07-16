@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { songs } from './PlayControls';
+import { songs } from './SongData';
 import { is_empty } from "../components/Utils"
 
 const Playlists = () => {
@@ -11,15 +11,13 @@ const Playlists = () => {
   const [playDisable, setPlayDisable] = useState(true);
   const [prevDisable, setPrevDisable] = useState(true);
   const [nextDisable, setNextDisable] = useState(true);
-  const [startDisable, setStartDisable] = useState(false);
   const [createDisable, setCreateDisable] = useState(false);
 
 
   const selectedSong = songs.find(item => item.id === selectedSongId);   // Find the selected song based on the selectedSongId.
 
   const toggleDropdown = () => {
-    setShowDropdown(!showDropdown);  // Toggle the visibility of the dropdown.
-    setStartDisable(!showDropdown); // Disable the "Create new playlist" button when the dropdown is shown.
+    setShowDropdown(!showDropdown);  // Toggle the visibility of the dropdown & after the click it will disable.
   };
 
   // It adds or removes the song ID from the selectedSongs array based on whether it's already present or not.
@@ -93,7 +91,7 @@ const Playlists = () => {
   return (
     <div>
       <h1>Playlists</h1>
-      <button disabled={startDisable} onClick={toggleDropdown}>Create new playlist</button>
+      <button disabled={showDropdown} onClick={toggleDropdown}>Create new playlist</button>
       <audio src={selectedSong?.file_name} autoPlay />
       {showDropdown && (
         <div>
@@ -106,7 +104,7 @@ const Playlists = () => {
                   checked={selectedSongs.includes(song.id)}
                   onChange={() => handleSongSelection(song.id)}
                 />
-                {song.name}
+                {song.name} <img src={song.image} width="100" height="100" />
               </li>
             ))}
           </ul>
@@ -117,13 +115,14 @@ const Playlists = () => {
           <ul>
             {playlist.map((song) => (
               <li key={song.id} onClick={() => handlePlay(song.id)}>
-                {song.name}
+                {song.name} <img src={song.image} width="100" height="100" />
               </li>  // Renders each selected song as a list item with a unique key based on the song's id and displays the song's name.
             ))}
           </ul>
 
           {/* printing currently playing song */}
           {is_empty(selectedSong) ? "" : selectedSong.name}
+          {is_empty(selectedSong) ? "" : <img src={selectedSong?.image} width="230" height="250" />}
 
           <button disabled={playDisable} onClick={handlePause}>
             {playPause ? "Pause" : "Play"}
