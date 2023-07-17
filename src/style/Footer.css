@@ -1,9 +1,32 @@
+.playPauseBtn {
+    background: black;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.prevBtn {
+    background: black;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.nextBtn {
+    background: black;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
 .bottomNavigation {
     background: black !important;
     display: flex !important;
     justify-content: space-between !important;
     align-items: center;
     height: 72px !important;
+    position: relative;
+    top: 317px;
 }
 
 .left {
@@ -26,6 +49,7 @@
 .left>img {
     border-radius: 4px;
     height: 80%;
+    width: auto;
 }
 
 .musicName {
@@ -39,7 +63,7 @@
     font-size: 0.6875rem;
     font-weight: 400;
     color: #6a6a6a;
-    
+
 }
 
 .heartIcon {

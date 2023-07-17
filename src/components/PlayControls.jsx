@@ -2,8 +2,21 @@ import { Link } from 'react-router-dom';
 import React, { useState } from 'react'
 import { is_empty } from "../components/Utils"
 import { songs } from "../components/SongData"
-import Footer from './Footer';
-
+import { Slider, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
+import "../style/Footer.css"
+import "../style/PlayControls.css"
+import dailyMix1 from "../assets/dailyMix1.jpeg"
+import ShuffleIcon from '@mui/icons-material/Shuffle';
+import PlayCircleIcon from '@mui/icons-material/PlayCircle';
+import SkipNextIcon from '@mui/icons-material/SkipNext';
+import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
+import RepeatIcon from '@mui/icons-material/Repeat';
+import PauseCircleIcon from '@mui/icons-material/PauseCircle';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import VolumeUpRoundedIcon from '@mui/icons-material/VolumeUpRounded';
+import WrapTextRoundedIcon from '@mui/icons-material/WrapTextRounded';
+import QueueMusicRoundedIcon from '@mui/icons-material/QueueMusicRounded';
+import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded';
 
 const PlayControls = () => {
 
@@ -68,35 +81,136 @@ const PlayControls = () => {
 
     };
 
-    console.log("selectedSong", is_empty(selectedSong));
+    // console.log("selectedSong", is_empty(selectedSong));
 
     return (
         <div>
-            PlayControls
+            <div className="container">
+                <div className="leftContainer">
+                    <div className="leftTop"></div>
+                    <div className="leftBottom"></div>
+                </div>
+
+                <div className="mainContainer">
+                    <div className="heading">
+                        <div className="headingImage">
+                            <img src={dailyMix1} height="232px" width="232px" />
+                        </div>
+                        <div className="headingContent">
+                            <span className="playlist">Playlist</span>
+                            <span>
+                                <h1 className="dailyMix1">Daily Mix 1</h1>
+                            </span>
+                            <span className="aristsName">Kid Travis, dj Shawny, R3YAN and more</span>
+                        </div>
+                    </div>
+                    <div className="heading2"></div>
+                    <div className="table">
+                        <TableContainer className='tableContainer'>
+                            <Table stickyHeader>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>#</TableCell>
+                                        <TableCell>Title</TableCell>
+                                        <TableCell>Artist</TableCell>
+                                        <TableCell><AccessTimeRoundedIcon sx={{ color: "hsla(0,0%,100%,.7)", width: "16px", height: "16px" }} /></TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {songs.map((song, index) => (
+                                        <TableRow key={song.id}
+                                            onClick={() => playMusic(song.id)}
+                                            className="tableRow"
+                                        >
+                                            <TableCell>{index + 1}</TableCell>
+                                            <TableCell>
+                                                <img src={song.image} alt={song.name} width="50" height="50" />
+                                                <div>
+                                                    <span>{song.name}</span>
+                                                </div>
+                                            </TableCell>
+                                            <TableCell>{song.artist}</TableCell>
+                                            <TableCell>{song.timeStamp}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </div>
+                </div>
+            </div>
             <audio src={selectedSong?.file_name} autoPlay />
-            <ul>
-                {songs.map((song) => (
-                    <li key={song.id} onClick={() => playMusic(song.id)}>
-                        {song.name} <img src={song.image} width="100" height="100" />
-                    </li>
-                ))}
-            </ul>
 
-            {/* displaying name of the current playing song */}
-            {is_empty(selectedSong) ? "" : selectedSong.name}
-            {is_empty(selectedSong) ? "" : <img src={selectedSong?.image} width="230" height="250" />}
-
-            <button disabled={playDisable} onClick={handlePause}>
-                {playPause ? "Pause" : "Play"}
-            </button>
-            <button disabled={prevDisable} onClick={handlePrevious}>Previous</button>
-            <button disabled={nextDisable} onClick={handleNext}>Next</button>
-
-            <Link to="/playlists">
+            {/* <Link to="/playlists">
                 <button>Playlists</button>
-            </Link>
-            <Footer/>
+            </Link> */}
+    
+
+        <div className='bottomNavigation'>
+            <div className="left">
+                {/* displaying name of the current playing song */}
+                {is_empty(selectedSong) ? "" : <img src={selectedSong?.image} width="230" height="250" />}
+                <div className="currentPlayingSong">
+                    <div className="musicName">
+                        {is_empty(selectedSong) ? "" : selectedSong.name}
+                    </div>
+                    <div className="artistName">
+                        {is_empty(selectedSong) ? "" : selectedSong.artist}
+                    </div>
+                </div>
+                {is_empty(selectedSong) ? "" : <FavoriteBorderIcon className='heartIcon' sx={{ color: "hsla(0,0%,100%,.7)", width: "16px", height: "16px" }} />
+                }
+            </div>
+
+            <div className="center">
+                <div className="controls">
+                    <ShuffleIcon sx={{ color: "white", width: "16px", height: "16px" }} />
+
+                    <button className='prevBtn' disabled={prevDisable} onClick={handlePrevious}>
+                        <SkipPreviousIcon sx={{ color: "white", width: "16px", height: "16px" }} />
+                    </button>
+
+                    <button className='playPauseBtn' disabled={playDisable} onClick={handlePause}>
+                        {playPause ? <PauseCircleIcon sx={{ color: "white", width: "32px", height: "32px" }} />
+                            : <PlayCircleIcon sx={{ color: "white", width: "32px", height: "32px" }} />}
+                    </button>
+
+                    <button className='nextBtn' disabled={nextDisable} onClick={handleNext}>
+                        <SkipNextIcon sx={{ color: "white", width: "16px", height: "16px" }} />
+                    </button>
+
+                    <RepeatIcon sx={{ color: "white", width: "16px", height: "16px" }} />
+
+                </div>
+
+                <div className="slider">
+                    <div className="timer">0:01</div>
+                    <Slider
+                        sx={{ width: "80%", color: '#fff' }}
+                        size="small"
+                        defaultValue={50}
+                        aria-label="Small"
+                        valueLabelDisplay="auto"
+                    />
+                    <div className="totalTime">3:00</div>
+                </div>
+            </div>
+
+            <div className="right">
+                <QueueMusicRoundedIcon sx={{ color: "hsla(0,0%,100%,.7);", width: "20px", height: "20px" }} />
+                <WrapTextRoundedIcon sx={{ color: "hsla(0,0%,100%,.7);", width: "20px", height: "20px" }} />
+                <VolumeUpRoundedIcon sx={{ color: "hsla(0,0%,100%,.7);", width: "20px", height: "20px" }} />
+                <Slider
+                    sx={{ width: "25%", color: '#fff' }}
+                    size="small"
+                    defaultValue={50}
+                    aria-label="Small"
+                    valueLabelDisplay="auto"
+                />
+            </div>
         </div>
+    
+        </div >
     );
 }
 

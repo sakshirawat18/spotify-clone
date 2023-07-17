@@ -1,4 +1,4 @@
-import { BottomNavigation, Slider, } from '@mui/material'
+import { Slider, } from '@mui/material'
 import "../style/Footer.css"
 import babydoll from "../assets/babydoll.jpeg"
 import React from 'react'
@@ -72,3 +72,4 @@ const Footer = () => {
 }
 
 export default Footer
+
