@@ -3,10 +3,9 @@
     display: flex !important;
     justify-content: space-between !important;
     align-items: center;
-    height: 72px !important;
+    height: 79px !important;
     position: fixed;
-    bottom: 0;
-    left: 0;
+    top: 710px;
     width: 100%;
 }
 
