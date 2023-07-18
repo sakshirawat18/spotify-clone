@@ -107,7 +107,7 @@ const PlayControls = () => {
                     <div className="heading2"></div>
                     <div className="table">
                         <TableContainer className='tableContainer'>
-                            <Table stickyHeader>
+                            <Table stickyHeader className='stickyHeader'>
                                 <TableHead>
                                     <TableRow>
                                         <TableCell>#</TableCell>
@@ -124,9 +124,9 @@ const PlayControls = () => {
                                         >
                                             <TableCell>{index + 1}</TableCell>
                                             <TableCell>
-                                                <img src={song.image} alt={song.name} width="50" height="50" />
-                                                <div>
-                                                    <span>{song.name}</span>
+                                                <div className="songInfo">
+                                                    <img src={song.image} width="50" height="50" />
+                                                    <div className="songName">{song.name}</div>
                                                 </div>
                                             </TableCell>
                                             <TableCell>{song.artist}</TableCell>
@@ -144,72 +144,72 @@ const PlayControls = () => {
             {/* <Link to="/playlists">
                 <button>Playlists</button>
             </Link> */}
-    
 
-        <div className='bottomNavigation'>
-            <div className="left">
-                {/* displaying name of the current playing song */}
-                {is_empty(selectedSong) ? "" : <img src={selectedSong?.image} width="230" height="250" />}
-                <div className="currentPlayingSong">
-                    <div className="musicName">
-                        {is_empty(selectedSong) ? "" : selectedSong.name}
+
+            <div className='footerContainer'>
+                <div className="leftFooter">
+                    {/* displaying name of the current playing song */}
+                    {is_empty(selectedSong) ? "" : <img src={selectedSong?.image} width="230" height="250" />}
+                    <div className="currentPlayingSong">
+                        <div className="musicName">
+                            {is_empty(selectedSong) ? "" : selectedSong.name}
+                        </div>
+                        <div className="artistName">
+                            {is_empty(selectedSong) ? "" : selectedSong.artist}
+                        </div>
                     </div>
-                    <div className="artistName">
-                        {is_empty(selectedSong) ? "" : selectedSong.artist}
-                    </div>
-                </div>
-                {is_empty(selectedSong) ? "" : <FavoriteBorderIcon className='heartIcon' sx={{ color: "hsla(0,0%,100%,.7)", width: "16px", height: "16px" }} />
-                }
-            </div>
-
-            <div className="center">
-                <div className="controls">
-                    <ShuffleIcon sx={{ color: "white", width: "16px", height: "16px" }} />
-
-                    <button className='prevBtn' disabled={prevDisable} onClick={handlePrevious}>
-                        <SkipPreviousIcon sx={{ color: "white", width: "16px", height: "16px" }} />
-                    </button>
-
-                    <button className='playPauseBtn' disabled={playDisable} onClick={handlePause}>
-                        {playPause ? <PauseCircleIcon sx={{ color: "white", width: "32px", height: "32px" }} />
-                            : <PlayCircleIcon sx={{ color: "white", width: "32px", height: "32px" }} />}
-                    </button>
-
-                    <button className='nextBtn' disabled={nextDisable} onClick={handleNext}>
-                        <SkipNextIcon sx={{ color: "white", width: "16px", height: "16px" }} />
-                    </button>
-
-                    <RepeatIcon sx={{ color: "white", width: "16px", height: "16px" }} />
-
+                    {is_empty(selectedSong) ? "" : <FavoriteBorderIcon className='heartIcon' sx={{ color: "hsla(0,0%,100%,.7)", width: "16px", height: "16px" }} />
+                    }
                 </div>
 
-                <div className="slider">
-                    <div className="timer">0:01</div>
+                <div className="centerFooter">
+                    <div className="controls">
+                        <ShuffleIcon sx={{ color: "white", width: "16px", height: "16px" }} />
+
+                        <button className='prevBtn' disabled={prevDisable} onClick={handlePrevious}>
+                            <SkipPreviousIcon sx={{ color: "white", width: "16px", height: "16px" }} />
+                        </button>
+
+                        <button className='playPauseBtn' disabled={playDisable} onClick={handlePause}>
+                            {playPause ? <PauseCircleIcon sx={{ color: "white", width: "32px", height: "32px" }} />
+                                : <PlayCircleIcon sx={{ color: "white", width: "32px", height: "32px" }} />}
+                        </button>
+
+                        <button className='nextBtn' disabled={nextDisable} onClick={handleNext}>
+                            <SkipNextIcon sx={{ color: "white", width: "16px", height: "16px" }} />
+                        </button>
+
+                        <RepeatIcon sx={{ color: "white", width: "16px", height: "16px" }} />
+
+                    </div>
+
+                    <div className="slider">
+                        <div className="timer">0:01</div>
+                        <Slider
+                            sx={{ width: "80%", color: '#fff' }}
+                            size="small"
+                            defaultValue={50}
+                            aria-label="Small"
+                            valueLabelDisplay="auto"
+                        />
+                        <div className="totalTime">3:00</div>
+                    </div>
+                </div>
+
+                <div className="rightFooter">
+                    <QueueMusicRoundedIcon sx={{ color: "hsla(0,0%,100%,.7);", width: "20px", height: "20px" }} />
+                    <WrapTextRoundedIcon sx={{ color: "hsla(0,0%,100%,.7);", width: "20px", height: "20px" }} />
+                    <VolumeUpRoundedIcon sx={{ color: "hsla(0,0%,100%,.7);", width: "20px", height: "20px" }} />
                     <Slider
-                        sx={{ width: "80%", color: '#fff' }}
+                        sx={{ width: "25%", color: '#fff' }}
                         size="small"
                         defaultValue={50}
                         aria-label="Small"
                         valueLabelDisplay="auto"
                     />
-                    <div className="totalTime">3:00</div>
                 </div>
             </div>
 
-            <div className="right">
-                <QueueMusicRoundedIcon sx={{ color: "hsla(0,0%,100%,.7);", width: "20px", height: "20px" }} />
-                <WrapTextRoundedIcon sx={{ color: "hsla(0,0%,100%,.7);", width: "20px", height: "20px" }} />
-                <VolumeUpRoundedIcon sx={{ color: "hsla(0,0%,100%,.7);", width: "20px", height: "20px" }} />
-                <Slider
-                    sx={{ width: "25%", color: '#fff' }}
-                    size="small"
-                    defaultValue={50}
-                    aria-label="Small"
-                    valueLabelDisplay="auto"
-                />
-            </div>
-        </div>
-    
         </div >
     );
 }
