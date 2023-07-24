@@ -25,8 +25,9 @@ const Playlists = () => {
     if (selectedSongs.includes(songId)) {
       setSelectedSongs(selectedSongs.filter((id) => id !== songId));  // Deselect the song if it's already selected.
     } else {
-      setSelectedSongs([...selectedSongs, songId]);   // Select the song if it's not already selected.
+      setSelectedSongs([...selectedSongs, songId])   // Select the song if it's not already selected.
     }
+    console.log("songselect", selectedSongs)
   };
 
   const create = () => {

@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { is_empty } from "../components/Utils"
 import { songs } from "../components/SongData"
-import { Slider, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
+import { Slider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import "../style/Footer.css"
 import "../style/PlayControls.css"
 import dailyMix1 from "../assets/dailyMix1.jpeg"
@@ -18,8 +18,16 @@ import VolumeUpRoundedIcon from '@mui/icons-material/VolumeUpRounded';
 import WrapTextRoundedIcon from '@mui/icons-material/WrapTextRounded';
 import QueueMusicRoundedIcon from '@mui/icons-material/QueueMusicRounded';
 import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import LibraryMusicRoundedIcon from '@mui/icons-material/LibraryMusicRounded';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
+import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
+import FavoriteSharpIcon from '@mui/icons-material/FavoriteSharp';
+import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 
-const PlayControls = () => {
+const PlayControls = ({ likedSongsId, setLikedSongsId }) => {
 
     const [selectedSongId, setSelectedSongId] = useState();
     const [playPause, setPlayPause] = useState();
@@ -27,6 +35,8 @@ const PlayControls = () => {
     const [prevDisable, setPrevDisable] = useState(true);
     const [nextDisable, setNextDisable] = useState(true);
     const [shuffleDisable, setShuffleDisable] = useState(true);
+    const [likeBtn, setLikeBtn] = useState(false);
+
     const selectedSong = songs.find(item => item.id === selectedSongId);
 
     const playMusic = (songId) => {
@@ -88,15 +98,64 @@ const PlayControls = () => {
         return songs.sort(() => Math.random() - 0.5);
     }
 
+    const handleLikedSong = (songId) => {
+        if (likedSongsId?.includes(songId)) {
+            setLikedSongsId(likedSongsId.filter((id) => id !== songId));  // Deselect the song if it's already selected.
+        } else {
+            setLikedSongsId([...likedSongsId, songId])   // Select the song if it's not already selected.
+        }
+        console.log("---------like", likeBtn)
+    }
+
+    // Update the likeBtn state based on whether the song is currently liked or not.
+    // We will use the selectedSongId to check if the song is liked or not.
+    useEffect(() => {
+        setLikeBtn(likedSongsId?.includes(selectedSongId));
+    }, [likedSongsId, selectedSongId]);
+
+
     // console.log("selectedSong", is_empty(selectedSong));
 
     return (
         <div>
+            {/* <Link to="/playlists">
+                <button>Playlists</button>
+            </Link> */}
             <div className="container">
                 <div className="mainContainer">
                     <div className="leftContainer">
-                        <div className="leftTop"></div>
-                        <div className="leftBottom"></div>
+                        <div className="leftSubContainer">
+                            <div className="leftTop">
+
+                            </div>
+                            <div className="leftBottom">
+                                <div className="leftSubBottom">
+                                    <div className="libIcons">
+                                        <LibraryMusicRoundedIcon sx={{ color: "white", width: "16px", height: "16px" }} />
+                                        <AddRoundedIcon sx={{ color: "white", width: "16px", height: "16px" }} />
+                                        <ArrowForwardRoundedIcon sx={{ color: "white", width: "16px", height: "16px" }} />
+                                    </div>
+                                    <div className="playlistColumn">
+                                        <div className="playlistColumnButtons">
+                                            playlistColumnButtons
+                                            <SearchRoundedIcon sx={{ color: "white", width: "16px", height: "16px" }} />
+                                        </div>
+                                        <div className="playlistColumnTable">
+                                            <ul className="playlistCTL">
+                                                <li className="listItem">
+                                                    <Link to='/likedsongs'>
+                                                        LikedSongs
+                                                    </Link>
+                                                    {likedSongsId.length}
+                                                </li>
+                                            </ul>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div className="rightContainer">
                         <div className="heading">
@@ -111,7 +170,21 @@ const PlayControls = () => {
                                 <span className="aristsName">Kid Travis, dj Shawny, R3YAN and more</span>
                             </div>
                         </div>
-                        <div className="heading2"></div>
+                        <div className="middleContainer">
+                            <div className="middleContainerContent">
+                                <button className="playBtn" onClick={handlePause}>
+                                    {playPause ? <PauseCircleIcon sx={{ color: "#1DB954", width: "70px", height: "70px" }} />
+                                        : <PlayCircleIcon sx={{ color: "#1DB954", width: "70px", height: "70px" }} />
+                                    }
+                                </button>
+                                <button className="favBtn">
+                                    <FavoriteSharpIcon sx={{ color: "#1DB954", width: "32px", height: "32px" }} />
+                                </button>
+                                <button className="threeDot">
+                                    <MoreHorizRoundedIcon sx={{ color: "hsla(0, 0%, 100%, .7)", width: "32px", height: "32px" }} />
+                                </button>
+                            </div>
+                        </div>
                         <div className="table">
                             <TableContainer className='tableContainer'>
                                 <Table stickyHeader className='stickyHeader'>
@@ -120,21 +193,32 @@ const PlayControls = () => {
                                             <TableCell>#</TableCell>
                                             <TableCell>Title</TableCell>
                                             <TableCell>Artist</TableCell>
-                                            <TableCell><AccessTimeRoundedIcon sx={{ color: "hsla(0,0%,100%,.7)", width: "16px", height: "16px" }} /></TableCell>
+                                            <TableCell> </TableCell>
+                                            <TableCell> <AccessTimeRoundedIcon sx={{ color: "hsla(0,0%,100%,.7)", width: "16px", height: "16px" }} /> </TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
                                         {songs.map((song, index) => (
-                                            <TableRow key={song.id}
-                                                onClick={() => playMusic(song.id)}>
+                                            <TableRow key={song.id}>
                                                 <TableCell>{selectedSongId === song.id ? <img className='nowPlaying' src={nowPlaying} /> : index + 1}</TableCell>
                                                 <TableCell>
                                                     <div className="songInfo">
                                                         <img src={song.image} width="50" height="50" />
-                                                        <div className="songName">{song.name}</div>
+                                                        <div className="songName" onClick={() => playMusic(song.id)}>
+                                                            {song.name}
+                                                        </div>
                                                     </div>
                                                 </TableCell>
                                                 <TableCell>{song.artist}</TableCell>
+                                                <TableCell className="hoverTableCell">
+                                                    <button className='heartIconBtn' onClick={() => handleLikedSong(song.id)}>
+                                                        {likedSongsId?.includes(song.id) ? (
+                                                            <FavoriteRoundedIcon sx={{ color: "#1DB954", width: "16px", height: "16px" }} />
+                                                        ) : (
+                                                            <FavoriteBorderRoundedIcon sx={{ color: "white", width: "16px", height: "16px" }} />
+                                                        )}
+                                                    </button>
+                                                </TableCell>
                                                 <TableCell>{song.timeStamp}</TableCell>
                                             </TableRow>
                                         ))}
@@ -212,9 +296,7 @@ const PlayControls = () => {
             </div>
             <audio src={selectedSong?.file_name} autoPlay />
 
-            {/* <Link to="/playlists">
-                <button>Playlists</button>
-            </Link> */}
+
 
         </div >
     );
