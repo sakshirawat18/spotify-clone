@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react'
 import { is_empty } from "../components/Utils"
 import { songs } from "../components/SongData"
+import AudioPlayer from "react-audio-player"
 import { Slider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import "../style/Footer.css"
 import "../style/PlayControls.css"
@@ -36,6 +37,8 @@ const PlayControls = ({ likedSongsId, setLikedSongsId }) => {
     const [nextDisable, setNextDisable] = useState(true);
     const [shuffleDisable, setShuffleDisable] = useState(true);
     const [likeBtn, setLikeBtn] = useState(false);
+    const [volume, setVolume] = useState(0.5)
+
 
     const selectedSong = songs.find(item => item.id === selectedSongId);
 
@@ -113,8 +116,12 @@ const PlayControls = ({ likedSongsId, setLikedSongsId }) => {
         setLikeBtn(likedSongsId?.includes(selectedSongId));
     }, [likedSongsId, selectedSongId]);
 
-
     // console.log("selectedSong", is_empty(selectedSong));
+
+    const volumeControl = (e) => {
+        setVolume(parseFloat(e.target.value));
+        console.log("vol", e.target.value)
+    }
 
     return (
         <div>
@@ -285,19 +292,17 @@ const PlayControls = ({ likedSongsId, setLikedSongsId }) => {
                         <WrapTextRoundedIcon sx={{ color: "hsla(0,0%,100%,.7);", width: "20px", height: "20px" }} />
                         <VolumeUpRoundedIcon sx={{ color: "hsla(0,0%,100%,.7);", width: "20px", height: "20px" }} />
                         <Slider
+                            onChange={volumeControl}
                             sx={{ width: "25%", color: '#fff' }}
                             size="small"
-                            defaultValue={50}
                             aria-label="Small"
                             valueLabelDisplay="auto"
+                            min={0} max={1} step={0.01}
                         />
                     </div>
                 </div>
             </div>
-            <audio src={selectedSong?.file_name} autoPlay />
-
-
-
+            <AudioPlayer src={selectedSong?.file_name} volume={volume} autoPlay />
         </div >
     );
 }
