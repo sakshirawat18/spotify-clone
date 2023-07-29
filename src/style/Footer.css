@@ -113,3 +113,17 @@
     justify-content: flex-end;
     margin-right: 16px;
 }
+
+.volumeBtn{
+    background: black;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.shuffleBtn{
+    background: black;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+}

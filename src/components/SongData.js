@@ -26,7 +26,7 @@ export const songs = [
         file_name: Collide,
         image: collide,
         artist: "Justine Skye",
-        timeStamp: "0:00",
+        timeStamp: 4.21,
     },
     {
         id: 2,

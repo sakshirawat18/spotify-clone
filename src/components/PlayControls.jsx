@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { is_empty } from "../components/Utils"
 import { songs } from "../components/SongData"
 import AudioPlayer from "react-audio-player"
-import { Slider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Paper, Slider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import "../style/Footer.css"
 import "../style/PlayControls.css"
 import dailyMix1 from "../assets/dailyMix1.jpeg"
@@ -27,6 +27,10 @@ import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded
 import FavoriteSharpIcon from '@mui/icons-material/FavoriteSharp';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
+import VolumeOffRoundedIcon from '@mui/icons-material/VolumeOffRounded';
+import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
+import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 
 const PlayControls = ({ likedSongsId, setLikedSongsId }) => {
 
@@ -37,8 +41,9 @@ const PlayControls = ({ likedSongsId, setLikedSongsId }) => {
     const [nextDisable, setNextDisable] = useState(true);
     const [shuffleDisable, setShuffleDisable] = useState(true);
     const [likeBtn, setLikeBtn] = useState(false);
-    const [volume, setVolume] = useState(0.5)
-
+    const [volume, setVolume] = useState(0.5);
+    const duration = 200; // seconds
+    const [position, setPosition] = useState(32);
 
     const selectedSong = songs.find(item => item.id === selectedSongId);
 
@@ -120,7 +125,15 @@ const PlayControls = ({ likedSongsId, setLikedSongsId }) => {
 
     const volumeControl = (e) => {
         setVolume(parseFloat(e.target.value));
-        console.log("vol", e.target.value)
+        // console.log("vol", e.target.value)
+    }
+
+    const handleMute = () => {
+        setVolume(0);
+    }
+
+    const handleUnmute = () => {
+        setVolume(0.5)
     }
 
     return (
@@ -133,30 +146,48 @@ const PlayControls = ({ likedSongsId, setLikedSongsId }) => {
                     <div className="leftContainer">
                         <div className="leftSubContainer">
                             <div className="leftTop">
-
+                                <div className="leftTopList">
+                                    <HomeRoundedIcon sx={{ color: "white", width: "30px", height: "30px" }} /> <span className='leftTopSpan'>Home</span>
+                                </div>
+                                <div className="leftTopList">
+                                    <SearchRoundedIcon sx={{ color: "white", width: "30px", height: "30px" }} /> <span className='leftTopSpan'>Search</span>
+                                </div>
                             </div>
                             <div className="leftBottom">
                                 <div className="leftSubBottom">
-                                    <div className="libIcons">
-                                        <LibraryMusicRoundedIcon sx={{ color: "white", width: "16px", height: "16px" }} />
-                                        <AddRoundedIcon sx={{ color: "white", width: "16px", height: "16px" }} />
-                                        <ArrowForwardRoundedIcon sx={{ color: "white", width: "16px", height: "16px" }} />
+                                    <div className="libContainer">
+                                        <div className="libIcons">
+                                            <LibraryMusicRoundedIcon sx={{ color: "white", width: "30px", height: "30px" }} />
+                                            <span className="librarySpan">Your Library</span>
+                                        </div>
+
+                                        <div className="rightLibIcons">
+                                            <AddRoundedIcon sx={{ color: "white", width: "24px", height: "24px" }} />
+                                            <ArrowForwardRoundedIcon sx={{ color: "white", width: "24px", height: "24px" }} />
+                                        </div>
                                     </div>
                                     <div className="playlistColumn">
-                                        <div className="playlistColumnButtons">
-                                            playlistColumnButtons
-                                            <SearchRoundedIcon sx={{ color: "white", width: "16px", height: "16px" }} />
-                                        </div>
                                         <div className="playlistColumnTable">
-                                            <ul className="playlistCTL">
-                                                <li className="listItem">
-                                                    <Link to='/likedsongs'>
-                                                        LikedSongs
-                                                    </Link>
-                                                    {likedSongsId.length}
-                                                </li>
-                                            </ul>
+                                            <Link to='/likedsongs' style={{textDecoration: "none"}}>
+                                                <div className="playlistCTL">
+                                                    <FavoriteRoundedIcon sx={{
+                                                        borderRadius: "5px",
+                                                        background: "linear-gradient(to bottom, pink, rgb(48, 104, 128))",
+                                                        padding: "15px",
+                                                        color: "white", width: "16px", height: "16px"
+                                                    }} />
+                                                    <div className="likedSongContainer">
+                                                        <div className="subLikedSong">
 
+                                                            Liked Songs
+                                                        </div>
+                                                        <div className="lengthLikedSong">
+                                                          Playlist • {likedSongsId.length} songs
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </Link>
 
                                         </div>
                                     </div>
@@ -165,6 +196,10 @@ const PlayControls = ({ likedSongsId, setLikedSongsId }) => {
                         </div>
                     </div>
                     <div className="rightContainer">
+                        <div className="navBar">
+                            <ArrowBackIosNewRoundedIcon sx={{ color: "white", width: "30px", height: "30px" }} />
+                            <ArrowForwardIosRoundedIcon sx={{ color: "white", width: "30px", height: "30px" }} />
+                        </div>
                         <div className="heading">
                             <div className="headingImage">
                                 <img src={dailyMix1} height="232px" width="232px" />
@@ -192,10 +227,10 @@ const PlayControls = ({ likedSongsId, setLikedSongsId }) => {
                                 </button>
                             </div>
                         </div>
-                        <div className="table">
+                        <Paper className="table" sx={{ width: '100%', overflow: 'hidden' }}>
                             <TableContainer className='tableContainer'>
-                                <Table stickyHeader className='stickyHeader'>
-                                    <TableHead>
+                                <Table>
+                                    <TableHead className='stickyHeader'>
                                         <TableRow>
                                             <TableCell>#</TableCell>
                                             <TableCell>Title</TableCell>
@@ -232,7 +267,7 @@ const PlayControls = ({ likedSongsId, setLikedSongsId }) => {
                                     </TableBody>
                                 </Table>
                             </TableContainer>
-                        </div>
+                        </Paper>
                     </div>
                 </div>
                 <div className='footerContainer'>
@@ -275,29 +310,40 @@ const PlayControls = ({ likedSongsId, setLikedSongsId }) => {
                         </div>
 
                         <div className="slider">
-                            <div className="timer">0:01</div>
+                            <div className="timer">0.00</div>
                             <Slider
                                 sx={{ width: "80%", color: '#fff' }}
                                 size="small"
-                                defaultValue={50}
+                                defaultValue={0}
                                 aria-label="Small"
                                 valueLabelDisplay="auto"
+                                value={position}
+                                min={0}
+                                step={0.1}
+                                max={selectedSong?.timeStamp}
+                                onChange={(_, value) => setPosition(value)}
                             />
-                            <div className="totalTime">3:00</div>
+                            <div className="totalTime">{selectedSong ? selectedSong?.timeStamp : "0.00"} </div>
                         </div>
                     </div>
 
                     <div className="rightFooter">
                         <QueueMusicRoundedIcon sx={{ color: "hsla(0,0%,100%,.7);", width: "20px", height: "20px" }} />
                         <WrapTextRoundedIcon sx={{ color: "hsla(0,0%,100%,.7);", width: "20px", height: "20px" }} />
-                        <VolumeUpRoundedIcon sx={{ color: "hsla(0,0%,100%,.7);", width: "20px", height: "20px" }} />
+                        {volume === 0 ? <button className='volumeBtn' onClick={handleUnmute}><VolumeOffRoundedIcon sx={{ color: "hsla(0,0%,100%,.7);", width: "20px", height: "20px" }} /></button>
+                            : <button className='volumeBtn' onClick={handleMute}> <VolumeUpRoundedIcon sx={{ color: "hsla(0,0%,100%,.7);", width: "20px", height: "20px" }} /> </button>}
                         <Slider
                             onChange={volumeControl}
                             sx={{ width: "25%", color: '#fff' }}
                             size="small"
                             aria-label="Small"
                             valueLabelDisplay="auto"
-                            min={0} max={1} step={0.01}
+                            value={volume}
+                            defaultValue={volume}
+                            min={0}
+                            max={1}
+                            step={0.01}
+
                         />
                     </div>
                 </div>
